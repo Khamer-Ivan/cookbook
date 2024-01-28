@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная страница</title>
+</head>
+<body>
+    <h1>Добро пожаловать на CookBook</h1>
+    <p>Выберете действие:</p>
+    <ul>
+        <li><a href="{% url 'add_product_to_recipe' %}">Добавить продукт в рецепт</a></li>
+        <li><a href="{% url 'cook_recipe' %}">Приготовить</a></li>
+        <li><a href="{% url 'show_recipes_without_product' %}">Показать рецепты без продукта</a></li>
+        <li><a href="{% url 'go_to_admin' %}">Посетить админ панель</a></li></ul>
+</body>
+</html>

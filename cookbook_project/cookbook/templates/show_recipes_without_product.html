@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Показать рецепты без продукта</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>Показать рецепты без продукта</h1>
+
+    <label for="product-select">Выберете продукт:</label>
+    <select id="product-select">
+        {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="recipes-table">
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#product-select").change(function () {
+                var productId = $(this).val();
+                $.ajax({
+                    url: `/get_recipes_data/${productId}/`,
+                    type: 'GET',
+                    success: function (data) {
+                        var tableHtml = '<h2>Рецепты без ' + data.product_name + ':</h2><ul>';
+                        $.each(data.recipes_without_product, function (index, recipe) {
+                            tableHtml += '<li>' + recipe.id + ' - ' + recipe.name + '</li>';
+                        });
+                        tableHtml += '</ul>';
+
+                        tableHtml += '<h2>Рецепты с продуктом ' + data.product_name + ' менее 10 грамм:</h2><ul>';
+                        $.each(data.recipes_with_low_quantity, function (index, recipe) {
+                            tableHtml += '<li>' + recipe.id + ' - ' + recipe.name + '</li>';
+                        });
+                        tableHtml += '</ul>';
+
+                        $("#recipes-table").html(tableHtml);
+                    },
+                    error: function (error) {
+                        console.log('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
